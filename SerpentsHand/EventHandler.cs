@@ -9,10 +9,13 @@ using System.Linq;
 
 namespace SerpentsHand
 {
-	class EventHandler : IEventHandlerRoundStart, IEventHandlerTeamRespawn, IEventHandlerPocketDimensionEnter, IEventHandlerPocketDimensionDie,
+	public class EventHandler : IEventHandlerRoundStart, IEventHandlerTeamRespawn, IEventHandlerPocketDimensionEnter, IEventHandlerPocketDimensionDie,
 		IEventHandlerPocketDimensionExit, IEventHandlerPlayerHurt, IEventHandlerPlayerDie, IEventHandlerCheckRoundEnd, IEventHandlerWaitingForPlayers,
-		IEventHandlerSetRole
+		IEventHandlerSetRole, IEventHandlerDisconnect
 	{
+        // Used to tell OnCheckRoundEnd that it should refresh the SH players and make sure they are all connected
+	    private bool disconnectOccured;
+
 		public void SetConfigs()
 		{
 			SHPlugin.shItemList = new List<int>(SHPlugin.instance.GetConfigIntList("sh_spawn_items"));
@@ -44,12 +47,22 @@ namespace SerpentsHand
 			if (ev.Player.TeamRole.Team == Smod2.API.Team.TUTORIAL && SHPlugin.shPlayers.Contains(ev.Player.SteamId))
 			{
 				ev.Items.Clear();
-				int max = System.Enum.GetValues(typeof(ItemType)).Cast<int>().Max(), min = System.Enum.GetValues(typeof(ItemType)).Cast<int>().Min();
-				foreach (int a in SHPlugin.shItemList)
-					if (!(a > max || a < min))
-						ev.Items.Add((ItemType)a);
+
+				int max = System.Enum.GetValues(typeof(ItemType)).Cast<int>().Max(), 
+				    min = System.Enum.GetValues(typeof(ItemType)).Cast<int>().Min();
+
+				foreach (int id in SHPlugin.shItemList.Where(x => min <= x && x <= max))
+					ev.Items.Add((ItemType)id);
 			}
-		}
+            else if (ev.Player.TeamRole.Role == Role.SCP_106)
+			{
+			    SHPlugin.scp106 = ev.Player;
+			}
+            else if (ev.Player.PlayerId == SHPlugin.scp106.PlayerId) // If they were 106 but got swapped to someone besides 106
+			{
+			    SHPlugin.scp106 = null;
+			}
+        }
 
 		public void OnTeamRespawn(TeamRespawnEvent ev)
 		{
@@ -57,10 +70,7 @@ namespace SerpentsHand
 			{
 				if (SHPlugin.rand.Next(1, 101) <= SHPlugin.spawnChance && ev.PlayerList.Count > 0)
 				{
-					Timing.InTicks(() =>
-					{
-						SHPlugin.SpawnSHSquad(ev.PlayerList);
-					}, 4);
+					Timing.InTicks(() => SHPlugin.SpawnSHSquad(ev.PlayerList), 4);
 				}
 				else
 				{
@@ -73,10 +83,10 @@ namespace SerpentsHand
 
 		public void OnPlayerHurt(PlayerHurtEvent ev)
 		{
-			if (((SHPlugin.shPlayers.Contains(ev.Player.SteamId) && (ev.Attacker.TeamRole.Team == Smod2.API.Team.SCP || ev.DamageType == DamageType.POCKET)) ||
-				(SHPlugin.shPlayers.Contains(ev.Attacker.SteamId) && ev.Player.TeamRole.Team == Smod2.API.Team.SCP) ||
-				(SHPlugin.shPlayers.Contains(ev.Player.SteamId) && SHPlugin.shPlayers.Contains(ev.Attacker.SteamId) &&
-				ev.Player.SteamId != ev.Attacker.SteamId)) && !SHPlugin.friendlyFire)
+			if (((SHPlugin.shPlayers.Contains(ev.Player.SteamId) && (ev.Attacker.TeamRole.Team == Smod2.API.Team.SCP || ev.DamageType == DamageType.POCKET)) || // If the victim is a SH member and the attacker is an SCP or 106 dimension
+				(SHPlugin.shPlayers.Contains(ev.Attacker.SteamId) && ev.Player.TeamRole.Team == Smod2.API.Team.SCP) || // If the victim is an SCP and the attacker is a SH member
+				(SHPlugin.shPlayers.Contains(ev.Player.SteamId) && SHPlugin.shPlayers.Contains(ev.Attacker.SteamId) && ev.Player.SteamId != ev.Attacker.SteamId)) && // If the victim and attacker are SH members but not the same person
+			    !SHPlugin.friendlyFire)
 			{
 				ev.Damage = 0;
 			}
@@ -99,11 +109,19 @@ namespace SerpentsHand
 
 		public void OnCheckRoundEnd(CheckRoundEndEvent ev)
 		{
+		    if (disconnectOccured)
+		    {
+		        disconnectOccured = false;
+
+		        string[] connectedSteamIds = ev.Server.GetPlayers().Select(x => x.SteamId).ToArray();
+		        SHPlugin.shPlayers = SHPlugin.shPlayers.Where(x => connectedSteamIds.Contains(x)).ToList();
+		    }
+
 			bool MTFAlive = SHPlugin.CountRoles(Smod2.API.Team.NINETAILFOX) > 0;
 			bool CiAlive = SHPlugin.CountRoles(Smod2.API.Team.CHAOS_INSURGENCY) > 0;
 			bool ScpAlive = SHPlugin.CountRoles(Smod2.API.Team.SCP) > 0;
 			bool DClassAlive = SHPlugin.CountRoles(Smod2.API.Team.CLASSD) > 0;
-			bool ScientistsAlive = SHPlugin.CountRoles(Smod2.API.Team.SCIENTISTS) > 0;
+			bool ScientistsAlive = SHPlugin.CountRoles(Smod2.API.Team.SCIENTIST) > 0;
 			bool SHAlive = SHPlugin.shPlayers.Count > 0;
 
 			if (MTFAlive && (CiAlive || ScpAlive || DClassAlive || SHAlive))
@@ -144,5 +162,10 @@ namespace SerpentsHand
 				SHPlugin.shPlayersInPocket.Remove(ev.Player.SteamId);
 			}
 		}
+
+	    public void OnDisconnect(DisconnectEvent ev)
+	    {
+	        disconnectOccured = true;
+	    }
 	}
 }

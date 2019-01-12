@@ -1,10 +1,9 @@
 ﻿using Smod2.Commands;
 using Smod2.API;
-using System.Linq;
 
 namespace SerpentsHand
 {
-	class SpawnCommand : ICommandHandler
+    public class SpawnCommand : ICommandHandler
 	{
 		public string GetCommandDescription()
 		{
@@ -20,7 +19,7 @@ namespace SerpentsHand
 		{
 			if (args.Length > 0)
 			{
-				string id = "";
+				string id;
 				Player cPlayer = SHPlugin.FindPlayer(args[0]);
 				if (cPlayer != null)
 				{
@@ -32,17 +31,17 @@ namespace SerpentsHand
 				}
 				else
 				{
-					return new string[] { "Error: invalid player id." };
+					return new[] { "Error: invalid player id." };
 				}
 
 				Player tPlayer = SHPlugin.FindPlayer(id);
 				if (tPlayer != null)
 				{
 					SHPlugin.SpawnPlayer(tPlayer);
-					return new string[] { "Spawned player \"" + tPlayer.Name + "\" as Serpent's Hand." };
+					return new[] { "Spawned player \"" + tPlayer.Name + "\" as Serpent's Hand." };
 				}
 			}
-			return new string[] { GetUsage() };
+			return new[] { GetUsage() };
 		}
 	}
 }
