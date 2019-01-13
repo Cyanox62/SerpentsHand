@@ -58,7 +58,7 @@ namespace SerpentsHand
 			{
 			    SHPlugin.scp106 = ev.Player;
 			}
-            else if (ev.Player.PlayerId == SHPlugin.scp106.PlayerId) // If they were 106 but got swapped to someone besides 106
+            else if (ev.Player.PlayerId == SHPlugin.scp106?.PlayerId) // If they were 106 but got swapped to someone besides 106
 			{
 			    SHPlugin.scp106 = null;
 			}
