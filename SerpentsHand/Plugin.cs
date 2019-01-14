@@ -27,8 +27,9 @@ namespace SerpentsHand
 		public static List<string> shPlayersInPocket = new List<string>();
 		public static List<string> shPlayers = new List<string>();
 		public static List<int> shItemList = new List<int>();
+        public static Player scp106;
 
-		private static Vector shSpawnPos = new Vector(0, 1001, 8);
+		private static readonly Vector shSpawnPos = new Vector(0, 1001, 8);
 
 		public static string ciAnnouncement;
 		public static string shAnnouncement;
@@ -70,8 +71,8 @@ namespace SerpentsHand
 			AddConfig(new Smod2.Config.ConfigSetting("sh_health", 120, Smod2.Config.SettingType.NUMERIC, true, ""));
 			AddConfig(new Smod2.Config.ConfigSetting("sh_max_squad", 8, Smod2.Config.SettingType.NUMERIC, true, ""));
 
-			AddCommands(new string[] { "spawnsh" }, new SpawnCommand());
-			AddCommands(new string[] { "spawnshsquad" }, new SpawnSquad());
+			AddCommands(new[] { "spawnsh" }, new SpawnCommand());
+			AddCommands(new[] { "spawnshsquad" }, new SpawnSquad());
 		}
 
 		public static Player FindPlayer(string identifier)
@@ -81,11 +82,11 @@ namespace SerpentsHand
 
 		public static void TeleportTo106(Player Player)
 		{
-			Player player = PluginManager.Manager.Server.GetPlayers().Where(x => x.TeamRole.Role == Role.SCP_106).FirstOrDefault();
-			if (player != null) {
+			if (scp106 != null)
+			{
 				Timing.Next(() =>
 				{
-					Player.Teleport(player.GetPosition());
+					Player.Teleport(scp106.GetPosition());
 				});
 			}
 		}
@@ -122,32 +123,22 @@ namespace SerpentsHand
 
 		public static int CountRoles(Role role)
 		{
-			int count = 0;
-			foreach (Player pl in PluginManager.Manager.Server.GetPlayers())
-				if (pl.TeamRole.Role == role)
-					count++;
-			return count;
+			return PluginManager.Manager.Server.GetPlayers().Count(x => x.TeamRole.Role == role);
 		}
 
 		public static int CountRoles(Smod2.API.Team team)
 		{
-			int count = 0;
-			foreach (Player pl in PluginManager.Manager.Server.GetPlayers())
-				if (pl.TeamRole.Team == team)
-					count++;
-			return count;
+			return PluginManager.Manager.Server.GetPlayers().Count(x => x.TeamRole.Team == team);
 		}
 
 		public static void SpawnSquad(int size)
 		{
-			List<Player> spec = new List<Player>();
-			List<Player> PlayerList = PluginManager.Manager.Server.GetPlayers();
+		    List<Player> spec = PluginManager.Manager.Server.GetPlayers()
+		        .Where(x => x.TeamRole.Team == Smod2.API.Team.SPECTATOR)
+		        .ToList();
 
-			foreach (Player player in PluginManager.Manager.Server.GetPlayers())
-				if (player.TeamRole.Team == Smod2.API.Team.SPECTATOR)
-					spec.Add(player);
 
-			int spawnCount = 1;
+            int spawnCount = 1;
 			while (spec.Count > 0 && spawnCount <= size)
 			{
 				int index = rand.Next(0, spec.Count);
@@ -158,14 +149,6 @@ namespace SerpentsHand
 					spawnCount++;
 				}
 			}
-		}
-
-		public static int GetItemCount(Player player)
-		{
-			int count = 0;
-			foreach (Smod2.API.Item item in player.GetInventory())
-				count++;
-			return count;
 		}
 	}
 }

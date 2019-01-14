@@ -4,7 +4,7 @@ using System;
 
 namespace SerpentsHand
 {
-	class SpawnSquad : ICommandHandler
+	public class SpawnSquad : ICommandHandler
 	{
 		public string GetCommandDescription()
 		{
@@ -26,7 +26,7 @@ namespace SerpentsHand
 				}
 				else
 				{
-					return new string[] { "Error: invalid size." };
+					return new[] { "Error: invalid size." };
 				}
 			}
 			else
@@ -34,7 +34,7 @@ namespace SerpentsHand
 				SHPlugin.SpawnSquad(5);
 			}
 			PluginManager.Manager.Server.Map.AnnounceCustomMessage(SHPlugin.shAnnouncement);
-			return new string[] { "Spawned squad." };
+			return new[] { "Spawned squad." };
 		}
 	}
 }
