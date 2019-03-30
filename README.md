@@ -6,7 +6,9 @@ A plugin that adds a new class to your server named "Serpent's Hand". This class
 
 **[Smod2](https://github.com/Grover-c13/Smod2) must be installed for this to work.**
 
-**If you have [AdminToolbox](https://github.com/Rnen/AdminToolbox) installed, add this line to your config to prevent conflictions with this plugin** `admintoolbox_tutorial_dmg_allowed: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22`
+**If you have [AdminToolbox](https://github.com/Rnen/AdminToolbox) installed, add this line to your config to prevent conflictions with this plugin** `admintoolbox_tutorial_dmg_allowed: *`
+
+> **AdminToolbox author comment:** Later versions of the Admintoolbox plugin __should__ not conflict in any way, and will not require this config.
 
 Place the "SerpentsHand.dll" file in your sm_plugins folder.
 
