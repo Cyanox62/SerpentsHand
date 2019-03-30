@@ -8,7 +8,7 @@ A plugin that adds a new class to your server named "Serpent's Hand". This class
 
 **If you have [AdminToolbox](https://github.com/Rnen/AdminToolbox) installed, add this line to your config to prevent conflictions with this plugin** `admintoolbox_tutorial_dmg_allowed: *`
 
-> **AdminToolbox author comment:** Later versions of the Admintoolbox plugin __should__ not conflict in any way, and will not require this config.
+> **AdminToolbox author comment:** Version 1.3.8 & later versions of the AdminToolbox plugin __should__ not conflict in any way, and will not require this config.
 
 Place the "SerpentsHand.dll" file in your sm_plugins folder.
 
