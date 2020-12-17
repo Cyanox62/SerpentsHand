@@ -1,7 +1,9 @@
-﻿using Exiled.API.Features;
+using Exiled.API.Features;
 using Exiled.Loader;
 using HarmonyLib;
 using System.Reflection;
+using EPlayer = Exiled.Events.Handlers.Player;
+using EServer = Exiled.Events.Handlers.Server;
 
 namespace SerpentsHand
 {
@@ -27,46 +29,46 @@ namespace SerpentsHand
             EventHandlers = new EventHandlers();
             Check035();
 
-            Exiled.Events.Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
-            Exiled.Events.Handlers.Server.RespawningTeam += EventHandlers.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.EnteringPocketDimension += EventHandlers.OnPocketDimensionEnter;
-            Exiled.Events.Handlers.Player.FailingEscapePocketDimension += EventHandlers.OnPocketDimensionDie;
-            Exiled.Events.Handlers.Player.EscapingPocketDimension += EventHandlers.OnPocketDimensionExit;
-            Exiled.Events.Handlers.Player.Dying += EventHandlers.OnPlayerDying;
-            Exiled.Events.Handlers.Player.Hurting += EventHandlers.OnPlayerHurt;
-            Exiled.Events.Handlers.Server.EndingRound += EventHandlers.OnCheckRoundEnd;
-            Exiled.Events.Handlers.Player.ChangingRole += EventHandlers.OnSetRole;
-            Exiled.Events.Handlers.Player.Left += EventHandlers.OnDisconnect;
+            EPlayer.EnteringPocketDimension += EventHandlers.OnPocketDimensionEnter;
+            EPlayer.FailingEscapePocketDimension += EventHandlers.OnPocketDimensionDie;
+            EPlayer.EscapingPocketDimension += EventHandlers.OnPocketDimensionExit;
+            EPlayer.Dying += EventHandlers.OnPlayerDying;
+            EPlayer.Hurting += EventHandlers.OnPlayerHurt;
+            EPlayer.ChangingRole += EventHandlers.OnSetRole;
+            EPlayer.Left += EventHandlers.OnDisconnect;
             Exiled.Events.Handlers.Scp106.Containing += EventHandlers.OnContain106;
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += EventHandlers.OnRACommand;
-            Exiled.Events.Handlers.Player.InsertingGeneratorTablet += EventHandlers.OnGeneratorInsert;
-            Exiled.Events.Handlers.Player.EnteringFemurBreaker += EventHandlers.OnFemurEnter;
-            Exiled.Events.Handlers.Player.Died += EventHandlers.OnPlayerDeath;
-            Exiled.Events.Handlers.Player.Shooting += EventHandlers.OnShoot;
-            Exiled.Events.Handlers.Player.Spawning += EventHandlers.OnSpawn;
+            EPlayer.InsertingGeneratorTablet += EventHandlers.OnGeneratorInsert;
+            EPlayer.EnteringFemurBreaker += EventHandlers.OnFemurEnter;
+            EPlayer.Died += EventHandlers.OnPlayerDeath;
+            EPlayer.Shooting += EventHandlers.OnShoot;
+            EPlayer.Spawning += EventHandlers.OnSpawn;
+            EServer.SendingRemoteAdminCommand += EventHandlers.OnRACommand;
+            EServer.RoundStarted += EventHandlers.OnRoundStart;
+            EServer.RespawningTeam += EventHandlers.OnTeamRespawn;
+            EServer.EndingRound += EventHandlers.OnCheckRoundEnd;
         }
 
         public override void OnDisabled()
         {
             base.OnDisabled();
 
-            Exiled.Events.Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
-            Exiled.Events.Handlers.Server.RespawningTeam -= EventHandlers.OnTeamRespawn;
-            Exiled.Events.Handlers.Player.EnteringPocketDimension -= EventHandlers.OnPocketDimensionEnter;
-            Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= EventHandlers.OnPocketDimensionDie;
-            Exiled.Events.Handlers.Player.EscapingPocketDimension -= EventHandlers.OnPocketDimensionExit;
-            Exiled.Events.Handlers.Player.Dying -= EventHandlers.OnPlayerDying;
-            Exiled.Events.Handlers.Player.Hurting -= EventHandlers.OnPlayerHurt;
-            Exiled.Events.Handlers.Server.EndingRound -= EventHandlers.OnCheckRoundEnd;
-            Exiled.Events.Handlers.Player.ChangingRole -= EventHandlers.OnSetRole;
-            Exiled.Events.Handlers.Player.Left -= EventHandlers.OnDisconnect;
+            EPlayer.EnteringPocketDimension -= EventHandlers.OnPocketDimensionEnter;
+            EPlayer.FailingEscapePocketDimension -= EventHandlers.OnPocketDimensionDie;
+            EPlayer.EscapingPocketDimension -= EventHandlers.OnPocketDimensionExit;
+            EPlayer.Dying -= EventHandlers.OnPlayerDying;
+            EPlayer.Hurting -= EventHandlers.OnPlayerHurt;
+            EPlayer.ChangingRole -= EventHandlers.OnSetRole;
+            EPlayer.Left -= EventHandlers.OnDisconnect;
             Exiled.Events.Handlers.Scp106.Containing -= EventHandlers.OnContain106;
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= EventHandlers.OnRACommand;
-            Exiled.Events.Handlers.Player.InsertingGeneratorTablet -= EventHandlers.OnGeneratorInsert;
-            Exiled.Events.Handlers.Player.EnteringFemurBreaker -= EventHandlers.OnFemurEnter;
-            Exiled.Events.Handlers.Player.Died -= EventHandlers.OnPlayerDeath;
-            Exiled.Events.Handlers.Player.Shooting -= EventHandlers.OnShoot;
-            Exiled.Events.Handlers.Player.Spawning -= EventHandlers.OnSpawn;
+            EPlayer.InsertingGeneratorTablet -= EventHandlers.OnGeneratorInsert;
+            EPlayer.EnteringFemurBreaker -= EventHandlers.OnFemurEnter;
+            EPlayer.Died -= EventHandlers.OnPlayerDeath;
+            EPlayer.Shooting -= EventHandlers.OnShoot;
+            EPlayer.Spawning -= EventHandlers.OnSpawn;
+            EServer.SendingRemoteAdminCommand -= EventHandlers.OnRACommand;
+            EServer.RoundStarted -= EventHandlers.OnRoundStart;
+            EServer.RespawningTeam -= EventHandlers.OnTeamRespawn;
+            EServer.EndingRound -= EventHandlers.OnCheckRoundEnd;
 
             hInstance.UnpatchAll();
             EventHandlers = null;
