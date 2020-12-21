@@ -40,7 +40,7 @@ namespace SerpentsHand
         {
             if (ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
             {
-                if (rand.Next(1, 101) <= SerpentsHand.instance.Config.SpawnChance && Player.List.Count() > 0 && respawnCount >= SerpentsHand.instance.Config.RespawnDelay)
+                if (isSpawnable && Player.List.Count() > 0 && respawnCount >= SerpentsHand.instance.Config.RespawnDelay)
                 {
                     List<Player> SHPlayers = new List<Player>();
                     List<Player> CIPlayers = new List<Player>(ev.Players);
