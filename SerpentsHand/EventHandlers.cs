@@ -9,6 +9,8 @@ namespace SerpentsHand
 {
     public partial class EventHandlers
     {
+	public static bool isSpawnable;    
+	
         public static List<int> shPlayers = new List<int>();
         private List<int> shPocketPlayers = new List<int>();
 
@@ -26,6 +28,12 @@ namespace SerpentsHand
             shPlayers.Clear();
             shPocketPlayers.Clear();
             respawnCount = 0;
+        }
+	    
+	public static void IsSpawnable()
+        {
+            if (rand.Next(1, 101) <= SerpentsHand.instance.Config.SpawnChance) isSpawnable = true;
+            else isSpawnable = false;
         }
 
         public void OnTeamRespawn(RespawningTeamEventArgs ev)
