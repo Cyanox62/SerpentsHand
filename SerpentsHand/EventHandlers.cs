@@ -14,7 +14,7 @@ namespace SerpentsHand
         public static List<int> shPlayers = new List<int>();
         private List<int> shPocketPlayers = new List<int>();
 
-        private int respawnCount = 0;
+        private static int respawnCount = 0;
 
         bool test = false;
 
@@ -32,7 +32,7 @@ namespace SerpentsHand
 	    
 	public static void IsSpawnable()
         {
-            if (rand.Next(1, 101) <= SerpentsHand.instance.Config.SpawnChance) isSpawnable = true;
+            if (rand.Next(1, 101) <= SerpentsHand.instance.Config.SpawnChance && respawnCount >= SerpentsHand.instance.Config.RespawnDelay) isSpawnable = true;
             else isSpawnable = false;
         }
 
