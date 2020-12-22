@@ -9,7 +9,7 @@ namespace SerpentsHand.Patches
         {
             if(__result == Respawning.SpawnableTeamType.ChaosInsurgency)
             {
-                API.SerpentsHand.Spawnable();
+                EventHandlers.IsSpawnable();
             }
         }
     }
