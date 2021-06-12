@@ -30,7 +30,12 @@ namespace SerpentsHand
             }
 
 			Timing.CallDelayed(0.5f, () => player.Position = shSpawnPos);
-		}
+            Player scp966 = Player.List.FirstOrDefault(p => p.SessionVariables.ContainsKey("is966") && (bool)p.SessionVariables["is966"]);
+            if (scp966 != null)
+            {
+                player.TargetGhostsHashSet.Remove(scp966.Id);
+            }
+        }
 
         internal static void CreateSquad(int size)
         {
