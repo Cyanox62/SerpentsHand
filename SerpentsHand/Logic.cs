@@ -4,6 +4,7 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using scp035.API;
+using Exiled.API.Extensions;
 
 namespace SerpentsHand
 {
@@ -126,7 +127,7 @@ namespace SerpentsHand
             }
             else
             {
-                player.Position = Map.GetRandomSpawnPoint(RoleType.Scp096);
+                player.Position = RoleType.Scp096.GetRandomSpawnPoint();
             }
         }
 
