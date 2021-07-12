@@ -32,9 +32,12 @@ namespace SerpentsHand
 
         public void OnTeamRespawn(RespawningTeamEventArgs ev)
         {
-            if (serpentsRespawnCount < SerpentsHand.instance.Config.MaxSpawns && !(!SerpentsHand.instance.Config.CanSpawnWithoutSCPs && Player.List.Where(x => x.Team == Team.SCP).Count() == 0))
+            if (serpentsRespawnCount < SerpentsHand.instance.Config.MaxSpawns && 
+                Player.List.Count(p => p.Team == Team.SCP && (p.Role != RoleType.Scp0492 || 
+                (p.SessionVariables.ContainsKey("is966") && (bool)p.SessionVariables["is966"]))) >= 2 &&
+                (Player.List.Count(p => p.IsHuman) > 6))
             {
-                if (rand.Next(1, 101) <= SerpentsHand.instance.Config.SpawnChance && Player.List.Count() > 0 && teamRespawnCount >= SerpentsHand.instance.Config.RespawnDelay)
+                if (rand.Next(1, 101) <= SerpentsHand.instance.Config.SpawnChance)
                 {
                     if (ev.NextKnownTeam == Respawning.SpawnableTeamType.NineTailedFox)
                     {
