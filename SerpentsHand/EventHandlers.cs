@@ -33,6 +33,7 @@ namespace SerpentsHand
         public void OnTeamRespawn(RespawningTeamEventArgs ev)
         {
             if (serpentsRespawnCount < SerpentsHand.instance.Config.MaxSpawns && 
+                teamRespawnCount >= SerpentsHand.instance.Config.RespawnDelay &&
                 Player.List.Count(p => p.Team == Team.SCP && (p.Role != RoleType.Scp0492 || 
                 (p.SessionVariables.ContainsKey("is966") && (bool)p.SessionVariables["is966"]))) >= 2 &&
                 (Player.List.Count(p => p.IsHuman) > 6))
