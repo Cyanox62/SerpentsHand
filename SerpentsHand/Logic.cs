@@ -127,7 +127,7 @@ namespace SerpentsHand
             }
             else
             {
-                player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp096);
+                player.Position = RoleType.Scp096.GetRandomSpawnPoint();
             }
         }
 
