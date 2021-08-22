@@ -4,13 +4,22 @@ using System.ComponentModel;
 
 namespace SerpentsHand
 {
+	using Exiled.API.Enums;
     public class Config : IConfig
     {
 		[Description("If Serpents Hand is enabled.")]
 		public bool IsEnabled { get; set; } = true;
 
 		[Description("The items Serpents Hand spawn with.")]
-		public List<int> SpawnItems { get; set; } = new List<int>() { 21, 26, 12, 14, 10 };
+		public List<ItemType> SpawnItems { get; set; } = new List<ItemType>() 
+		{ 
+			ItemType.GunCrossvec,
+			ItemType.KeycardChaosInsurgency,
+			ItemType.Medkit,
+			ItemType.Radio,
+			ItemType.GrenadeFlash,
+			ItemType.Flashlight
+		};
 
 		[Description("The change for Serpents Hand to spawn instead of Chaos.")]
 		public int SpawnChance { get; set; } = 50;

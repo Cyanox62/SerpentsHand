@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SerpentsHand.Patches
 {
-	[HarmonyPatch(typeof(Scp939PlayerScript), nameof(Scp939PlayerScript.CallCmdShoot))]
+	[HarmonyPatch(typeof(Scp939PlayerScript), nameof(Scp939PlayerScript.UserCode_CmdShoot))]
 	class Scp939Attack
 	{
 		public static void Postfix(Scp939PlayerScript __instance, GameObject target)
