@@ -1,10 +1,11 @@
 ﻿using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Enums;
 
 namespace SerpentsHand
 {
-	using Exiled.API.Enums;
+	
     public class Config : IConfig
     {
 		[Description("If Serpents Hand is enabled.")]

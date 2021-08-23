@@ -31,7 +31,7 @@ namespace SerpentsHand
                 //Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 1);
             }
 
-			Timing.CallDelayed(1f, () => player.Position = shSpawnPos);
+			Timing.CallDelayed(1.5f, () => player.Position = shSpawnPos);
             Player scp966 = Player.List.FirstOrDefault(p => p.SessionVariables.ContainsKey("is966") && (bool)p.SessionVariables["is966"]);
             if (scp966 != null)
             {
