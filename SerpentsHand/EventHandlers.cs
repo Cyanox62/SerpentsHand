@@ -12,6 +12,7 @@ namespace SerpentsHand
     {
         public static List<int> shPlayers = new List<int>();
         private List<int> shPocketPlayers = new List<int>();
+        internal static Dictionary<Player, Vector3> PositionsToSpawn = new Dictionary<Player, Vector3>();
 
         private int teamRespawnCount = 0;
         private int serpentsRespawnCount = 0;
@@ -24,6 +25,7 @@ namespace SerpentsHand
 
         public void OnRoundStart()
         {
+            PositionsToSpawn.Clear();
             test = false;
             shPlayers.Clear();
             shPocketPlayers.Clear();
@@ -124,7 +126,7 @@ namespace SerpentsHand
                 (shPlayers.Contains(ev.Attacker.Id) && (ev.Target.Team == Team.SCP || (scp035 != null && ev.Target == scp035))) ||
                 (shPlayers.Contains(ev.Target.Id) && shPlayers.Contains(ev.Attacker.Id) && ev.Target != ev.Attacker)) && !SerpentsHand.instance.Config.FriendlyFire)
             {
-                ev.Amount = 0f;
+                ev.IsAllowed = false;
             }
         }
 
@@ -215,6 +217,9 @@ namespace SerpentsHand
             }
             else if (SHAlive && !ScpAlive && !MTFAlive && !DClassAlive && !ScientistsAlive)
 			{
+                ev.LeadingTeam = Exiled.API.Enums.LeadingTeam.Anomalies;
+                ev.IsAllowed = true;
+                ev.IsRoundEnded = true;
                 if (SerpentsHand.instance.Config.EndRoundFriendlyFire) GrantFF();
             }
             else
@@ -281,6 +286,15 @@ namespace SerpentsHand
             if (shPlayers.Contains(ev.Player.Id) && !SerpentsHand.instance.Config.FriendlyFire)
             {
                 ev.IsAllowed = false;
+            }
+        }
+
+        public void OnSpawning(SpawningEventArgs ev)
+		{
+            if (PositionsToSpawn.ContainsKey(ev.Player))
+            {
+                ev.Position = PositionsToSpawn[ev.Player];
+                PositionsToSpawn.Remove(ev.Player);
             }
         }
     }

@@ -15,6 +15,7 @@ namespace SerpentsHand
         internal static void SpawnPlayer(Player player, bool full = true)
         {
             shPlayers.Add(player.Id);
+            PositionsToSpawn.Add(player, shSpawnPos);
             player.SetRole(RoleType.Tutorial);
             player.Broadcast(10, SerpentsHand.instance.Config.SpawnBroadcast);
             if (full)
@@ -31,7 +32,6 @@ namespace SerpentsHand
                 //Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 1);
             }
 
-			Timing.CallDelayed(1.5f, () => player.Position = shSpawnPos);
             Player scp966 = Player.List.FirstOrDefault(p => p.SessionVariables.ContainsKey("is966") && (bool)p.SessionVariables["is966"]);
             if (scp966 != null)
             {

@@ -43,6 +43,7 @@ namespace SerpentsHand
             Exiled.Events.Handlers.Player.EnteringFemurBreaker += EventHandlers.OnFemurEnter;
             Exiled.Events.Handlers.Player.Died += EventHandlers.OnPlayerDeath;
             Exiled.Events.Handlers.Player.Shooting += EventHandlers.OnShoot;
+            Exiled.Events.Handlers.Player.Spawning += EventHandlers.OnSpawning;
         }
 
         public override void OnDisabled()
@@ -65,6 +66,7 @@ namespace SerpentsHand
             Exiled.Events.Handlers.Player.EnteringFemurBreaker -= EventHandlers.OnFemurEnter;
             Exiled.Events.Handlers.Player.Died -= EventHandlers.OnPlayerDeath;
             Exiled.Events.Handlers.Player.Shooting -= EventHandlers.OnShoot;
+            Exiled.Events.Handlers.Player.Spawning -= EventHandlers.OnSpawning;
 
             hInstance.UnpatchAll();
             EventHandlers = null;
