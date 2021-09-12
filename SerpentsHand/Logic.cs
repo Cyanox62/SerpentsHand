@@ -7,7 +7,9 @@ using Exiled.API.Extensions;
 namespace SerpentsHand
 {
     using Exiled.API.Enums;
+	using Exiled.API.Features.Items;
 	using Exiled.Loader;
+	using InventorySystem.Items.Firearms.Attachments;
 	using System.Reflection;
 
 	partial class EventHandlers
@@ -24,9 +26,23 @@ namespace SerpentsHand
                 {
                     for (int i = 0; i < SerpentsHand.instance.Config.SpawnItems.Count; i++)
                     {
-                        player.AddItem(SerpentsHand.instance.Config.SpawnItems[i]);
+                        Item item = player.AddItem(SerpentsHand.instance.Config.SpawnItems[i]);
+                        if (item is Firearm firearm)
+                        {
+                            if (!AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary) || !dictionary.TryGetValue(item.Base.ItemTypeId, out uint num))
+                            {
+                                num = 0U;
+                            }
+                            num = firearm.Base.ValidateAttachmentsCode(num);
+                            firearm.Base.ApplyAttachmentsCode(num, false);
+                        }
                     }
                     player.Health = SerpentsHand.instance.Config.Health;
+                    foreach (ItemType ammoType in SerpentsHand.instance.Config.SpawnAmmo.Keys)
+                    {
+                        player.Inventory.UserInventory.ReserveAmmo[ammoType] = SerpentsHand.instance.Config.SpawnAmmo[ammoType];
+                        player.Inventory.SendAmmoNextFrame = true;
+                    }
                 });
                 // Prevent Serpents Hand from taking up Chaos spawn tickets
                 //Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 1);
