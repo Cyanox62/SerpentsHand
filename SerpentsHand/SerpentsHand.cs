@@ -38,11 +38,12 @@ namespace SerpentsHand
             Exiled.Events.Handlers.Player.ChangingRole += EventHandlers.OnSetRole;
             Exiled.Events.Handlers.Player.Left += EventHandlers.OnDisconnect;
             Exiled.Events.Handlers.Scp106.Containing += EventHandlers.OnContain106;
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += EventHandlers.OnRACommand;
-            Exiled.Events.Handlers.Player.InsertingGeneratorTablet += EventHandlers.OnGeneratorInsert;
+            //Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += EventHandlers.OnRACommand;
+            Exiled.Events.Handlers.Player.ActivatingGenerator += EventHandlers.OnActivatingGenerator;
             Exiled.Events.Handlers.Player.EnteringFemurBreaker += EventHandlers.OnFemurEnter;
             Exiled.Events.Handlers.Player.Died += EventHandlers.OnPlayerDeath;
             Exiled.Events.Handlers.Player.Shooting += EventHandlers.OnShoot;
+            Exiled.Events.Handlers.Player.Spawning += EventHandlers.OnSpawning;
         }
 
         public override void OnDisabled()
@@ -60,11 +61,12 @@ namespace SerpentsHand
             Exiled.Events.Handlers.Player.ChangingRole -= EventHandlers.OnSetRole;
             Exiled.Events.Handlers.Player.Left -= EventHandlers.OnDisconnect;
             Exiled.Events.Handlers.Scp106.Containing -= EventHandlers.OnContain106;
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= EventHandlers.OnRACommand;
-            Exiled.Events.Handlers.Player.InsertingGeneratorTablet -= EventHandlers.OnGeneratorInsert;
+            //Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= EventHandlers.OnRACommand;
+            Exiled.Events.Handlers.Player.ActivatingGenerator -= EventHandlers.OnActivatingGenerator;
             Exiled.Events.Handlers.Player.EnteringFemurBreaker -= EventHandlers.OnFemurEnter;
             Exiled.Events.Handlers.Player.Died -= EventHandlers.OnPlayerDeath;
             Exiled.Events.Handlers.Player.Shooting -= EventHandlers.OnShoot;
+            Exiled.Events.Handlers.Player.Spawning -= EventHandlers.OnSpawning;
 
             hInstance.UnpatchAll();
             EventHandlers = null;

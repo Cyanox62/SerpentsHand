@@ -1,16 +1,36 @@
 ﻿using Exiled.API.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Enums;
 
 namespace SerpentsHand
 {
-    public class Config : IConfig
-    {
+
+	public class Config : IConfig
+	{
 		[Description("If Serpents Hand is enabled.")]
 		public bool IsEnabled { get; set; } = true;
 
 		[Description("The items Serpents Hand spawn with.")]
-		public List<int> SpawnItems { get; set; } = new List<int>() { 21, 26, 12, 14, 10 };
+		public List<ItemType> SpawnItems { get; set; } = new List<ItemType>()
+		{
+			ItemType.GunCrossvec,
+			ItemType.KeycardChaosInsurgency,
+			ItemType.Medkit,
+			ItemType.Radio,
+			ItemType.GrenadeFlash,
+			ItemType.Flashlight,
+			ItemType.ArmorCombat
+		};
+
+		public Dictionary<ItemType, ushort> SpawnAmmo { get; set; } = new Dictionary<ItemType, ushort>()
+		{
+			{ ItemType.Ammo9x19, 120 },
+			{ ItemType.Ammo556x45, 60 },
+			{ ItemType.Ammo762x39, 60 },
+			{ ItemType.Ammo44cal, 30 },
+			{ ItemType.Ammo12gauge, 32 },
+		}; 
 
 		[Description("The change for Serpents Hand to spawn instead of Chaos.")]
 		public int SpawnChance { get; set; } = 50;
